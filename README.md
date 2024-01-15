@@ -5,7 +5,7 @@ While this is tested with English and Hindi/Sanskrit texts; it is expected to wo
 PROJECT IS NOT TESTED WITH UNIX/LINUX environments. But could work with minimal changes ( enviroent variable setup in bash needs different syntax then the one in README or in sample envcmd.cmd file)
 
 
-This project uses Google provided neural voices and it is flexible to allow for language and voice selection as google continues to releases new voices with ongoing improvements in AI.
+While looking for converting scanned pdfs to audio, could not find good complete solution. This project uses Google provided neural voices and it is flexible to allow for language and voice selection as google continues to releases new voices with ongoing improvements in AI.
 
 
 PREREQS:
@@ -54,7 +54,7 @@ sentstop variable is sentence stop character. It can be different in different l
 4B) SCRIPTS EXPLANATION and EXECUTION. 
  0. Start the command prompt and set the environment and goto respective directory. Keep the book pdf files, BOOKNAME.PDF and all scripts together in same directory as they are working as such. 
     Also Ensure book filename is without spaces. 
- 1. listvoices.py ## This will display avilable google cloud based voices and related language codes. langcode and voicename environment vairalbes above are to be set based on outcome of this script depending on language of the book.
+ 1. listvoices.py ## This will display available google cloud based voices and language codes. langcode and voicename environment vairalbes above are to be set based on outcome of this script depending on language of the book.
 
     This command will display all the google supported hindi indian voices.
     C:\books>  listvoices.py | find /i "hi-in"   
