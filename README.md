@@ -1,10 +1,11 @@
 These are set of scripts that will help to convert scanned pdf (such as old books) to UTF-8 based text files. Once you finish editing text files with appropriate corrections, it will also help to create audio file either MP3 or .WAV (linear16). This project is made and tested on windows but doesn't look like there is any specific dependency on operating system and hopefully should work on unix environments as well. 
 
+While this is tested with English and Hindi/Sanskrit texts; it is expected to work on other UTF-8 based files too as long as it is supported by google cloud vision and TextToSpeech libraries.
 
-PROJECT IS NOT TESTED WITH UNIX/LINUX environments. But could work with minimal changes ( enviroent variable setup in bash needs different syntax then the one in README or in samle envcmd.cmd file)
+PROJECT IS NOT TESTED WITH UNIX/LINUX environments. But could work with minimal changes ( enviroent variable setup in bash needs different syntax then the one in README or in sample envcmd.cmd file)
 
 
-While looking for converting scanned pdfs to audio, could not find good complete solution. This project uses Google provided neural voices and it is flexible to allow for language and voice selection as google continues to releases new voices with ongoing improvements in AI.
+This project uses Google provided neural voices and it is flexible to allow for language and voice selection as google continues to releases new voices with ongoing improvements in AI.
 
 
 PREREQS:
@@ -54,6 +55,10 @@ sentstop variable is sentence stop character. It can be different in different l
  0. Start the command prompt and set the environment and goto respective directory. Keep the book pdf files, BOOKNAME.PDF and all scripts together in same directory as they are working as such. 
     Also Ensure book filename is without spaces. 
  1. listvoices.py ## This will display avilable google cloud based voices and related language codes. langcode and voicename environment vairalbes above are to be set based on outcome of this script depending on language of the book.
+
+    This command will display all the google supported hindi indian voices.
+    C:\books>  listvoices.py | find /i "hi-in"   
+
  2. 2pdftotxt.py  ## Convert pdf to text file using google vision apis. 
  3. 3wavv.py      ## Convert txt to wav voice file using google TextToSpeech SynthesizeLongAudioRequest api. This seems WIP by google. 
  4. 0mp3ffmpeg.py ## Convert txt to mp3 voice file using google TextToSpeech synthesize_speech api.
