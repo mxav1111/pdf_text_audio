@@ -49,7 +49,10 @@ set removepartial=YES
 
 In Linux/Unix world (bash shell) , export will be used instead of set command above (with credential_path variable assignment will have $ sign instead of first % sign and last % sign will need to be removed). 
 REM command (remark) will be converted to # as a replacement for comment beginner identifier. 
+
 sentstop variable is sentence stop character. It can be different in different languages. It has been tested with hindi language. It is used in buffered mp3 creation. (when TextToSpeechLongAudioSynthesizeClient api fails)
+
+removepartial variable helps diagnose if mp3 generator fails to merge partial mp3s to one final mp3. Set it to NO if you want to study partial pieces for diagnosis purpose.
 
 4B) SCRIPTS EXPLANATION and EXECUTION. 
  0. Start the command prompt and set the environment and goto respective directory. Keep the book pdf files, BOOKNAME.PDF and all scripts together in same directory as they are working as such. 
@@ -57,12 +60,15 @@ sentstop variable is sentence stop character. It can be different in different l
  1. listvoices.py ## This will display available google cloud based voices and language codes. langcode and voicename environment vairalbes above are to be set based on outcome of this script depending on language of the book.
 
     This command will display all the google supported hindi indian voices.
+
     C:\books>  listvoices.py | find /i "hi-in"   
 
  2. 2pdftotxt.py  ## Convert pdf to text file using google vision apis. 
  3. 3wavv.py      ## Convert txt to wav voice file using google TextToSpeech SynthesizeLongAudioRequest api. This seems WIP by google. 
  4. 0mp3ffmpeg.py ## Convert txt to mp3 voice file using google TextToSpeech synthesize_speech api.
 
+
+If there is an heavy i/o (especially in 0mp3ffmpeg.py, imdisk can be used for creating ramdisk and work in ram. Only copy back the final output to physical disk. This will give significant boost to performance.
 
 ALTERNATE IDEAS:-
 
