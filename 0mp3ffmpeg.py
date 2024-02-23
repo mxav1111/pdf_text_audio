@@ -30,7 +30,7 @@ parent = f"projects/"+project_id+"/locations/"+location
 langcode = langcode or "hi-IN"  ; voicename=voicename or "hi-IN-Neural2-A" ; speakingrate=speakingrate or 0.85
 pagenumbers=os.environ['pagenumbers'] or "YES"
 sentstop=os.environ["sentstop"] or u"।"  ## default hindiS LOOK INTO THIS LATER
-sentstop=u"।"  ## default hindiS LOOK INTO THIS LATER
+## sentstop=u"।"  ## default hindiS LOOK INTO THIS LATER
 ## sentstop=str(sentstop, encoding='utf-8')
 ## bytes_object = bytes(sentstop, 'utf-8')
 ## sentstop = bytes_object.decode('utf-8')
@@ -39,6 +39,8 @@ sentstop=u"।"  ## default hindiS LOOK INTO THIS LATER
 print ('processing ' + ftr +' --> ' + ftw + "\nUsing: "+ langcode+" : "+voicename+" : "+str(speakingrate))
 f= open(ftr,"r",encoding="utf-8"); fc= f.read();  
 fc=re.sub(r'(?:=!pgB!=.*=!Epg!=\n)+',r'',fc)
+fc=re.sub(r'\([^ ]\)-(\n)+',r'\1',fc) ## word that splits and spans line using hypen is merged
+fc=re.sub(r'([^ ])-\n',r'\1',fc) ## remove new lines and convert multi spaces to single.
 fc=re.sub(r'(\n)+',r' ',fc); fc=re.sub(r'\n',r' ',fc); fc=re.sub(r'[ ][ ]*',r' ',fc)  ## remove new lines and convert multi spaces to single.
 strtpnt=0
 currulen=0; ufsz=len(fc.encode('utf-8'))
@@ -50,7 +52,7 @@ while currulen < ufsz:
  str1=""
  str1ulen=0
  #print(f'pos={pos},encodeutflen={len(str1.encode('utf-8'))},len={len(str1)}, string={str1}');
- while str1ulen < 4000:
+ while str1ulen < 2000:
   # esen=str0.find(sentstop,ssen)
   esen=fc.find(sentstop,ssen)
   if esen==-1: # sentence couldn't complete or EOF reached, if close to EOF then try to retrieve last pieces.
@@ -61,7 +63,7 @@ while currulen < ufsz:
   ssen=esen+1
   str1ulen=len(str1.encode('utf-8'))
   print(f'ssen={ssen},esen={esen},str1ulen={str1ulen},len={len(str1)}, currulen={currulen}, ufsz={ufsz}');
- print(f'fc details:- encodeutflen={len(fc.encode('utf-8'))},len={len(fc)}, " WHOLEFILE" ');
+ print(f'fc details:- encodeutflen={len(fc.encode("utf-8"))},len={len(fc)}, " WHOLEFILE" ');
  print(f'{str1}');
  client           = texttospeech.TextToSpeechClient()
  voice            = texttospeech.VoiceSelectionParams( language_code=langcode, name=voicename,)
@@ -70,8 +72,8 @@ while currulen < ufsz:
  request          = client.synthesize_speech( input=input, voice=voice, audio_config=audio_config)
  of1= ftw +"_"+str(flnum).zfill(3)+".mp3" 
  of2= ftw +"_"+str(flnum).zfill(3)+".out"
- with tempfile.TemporaryFile() as tmp1:
-  tmp1.write(request.audio_content)
+ #with tempfile.TemporaryFile() as tmp1:
+ # tmp1.write(request.audio_content)
   
  with open(of1,  "wb")  as out:
   out.write(request.audio_content)
