@@ -20,8 +20,8 @@ Tested with python 3.9 (linux) or 3.12 (windows).
 4A) Environment should be set as below. Example cmd or shell script is provided. Just update and run the same. book_file_name below should be without extension and avoid spaces in filename (rename otherwise). For example, if Book File Name is BE_HAPPY.PDF then set book=BE_HAPPY scripts will automatically create BE_HAPPY.txt , BE_HAPPY.wav , BE_HAPPY.mp3 , BE_HAPPY.json etc using BE_HAPPY.PDF. Actual Source file MUST have .PDF extension. 
 
 
-Sample .env file contents/some explanation.
-===========================================
+Sample .env file is provided. Here's some explanation.
+======================================================
 book=pdf_book_file_name_without_extension 
 
 GOOGLE_APPLICATION_CREDENTIALS=C:/final_pre/gogtts/gcreds.json 
@@ -67,11 +67,9 @@ bga variable points to background music to be added via 7bgmp3.py.
 
     C:\books> g_listvoices.py | find /i "hi-in"   
 
- 2a. 2pdftotxt.py  ## Convert pdf to text file using google vision apis.
+ 2a. pt.py ## Convert pdf to text. Google cloud APIs. 
  
- 2b. pt.py ## Convert pdf to text. Any probelms with 2pdftotxt.py, then just run pt.py which also uses google vision api but adds hint for vision. 
- 
- 2c. ms_pt.py ## Convert pdf to text. It can be used if Microsoft cloud is preferred.
+ 2b. ms_pt.py ## Convert pdf to text. MS Azure APIs.
  
  3a. 3wavv.py ## Convert text to wav voice file using google TextToSpeech SynthesizeLongAudioRequest api.
  
@@ -79,15 +77,15 @@ bga variable points to background music to be added via 7bgmp3.py.
  
  4. ms_st4_wav.py ## wip. Creates wav file using Microsoft cognitive services.
     
- 6. ms_listvoices.py ## List MS voices.
+ 5. ms_listvoices.py ## List MS voices.
     
- 8. 7bgmp3.py ## Add background music. There are lots of royalty free music available on internet. You can download any such mp3 and use it (see environment varriable bga above)
+ 7. 7bgmp3.py ## Add background music. There are lots of royalty free music available on internet. You can download any such mp3 and use it (see environment varriable bga above)
     
- 10. requirements.txt ## install prereqs.
+ 8. requirements.txt ## install prereqs.
      
- 12. .env sample file.
+ 9. .env sample file.
      
-If there is heavy i/o (especially in 0mp3ffmpeg.py or st4, imdisk can be used for creating ramdisk and work in ram. Only copy back the final output to physical disk. This will give significant boost to performance.
+If there is heavy i/o (especially in 0mp3ffmpeg.py or st4, install arsenal and create ramdisk and work in ram based drive. Just copy back the final output to physical disk. This will give significant boost to performance.
 
 ALTERNATE IDEAS:-
 
