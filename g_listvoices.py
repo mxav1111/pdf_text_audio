@@ -4,7 +4,6 @@ load_dotenv()
 
 def list_voices():
     """Lists the available voices."""
-    from google.cloud import texttospeech
 
     client = texttospeech.TextToSpeechClient()
 

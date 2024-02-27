@@ -1,7 +1,7 @@
 import os
 import re
 import azure.cognitiveservices.speech as speechsdk
-from dotenv import load_dotenv
+from   dotenv import load_dotenv
 load_dotenv()
 
 def split_text_into_chunks(text, max_chunk_size):

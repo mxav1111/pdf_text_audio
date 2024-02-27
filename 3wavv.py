@@ -1,19 +1,9 @@
-"""Synthesizes speech from the input string of text or ssml.
-Make sure to be working in a virtual environment.
-Note: ssml must be well-formed according to:
-    https://www.w3.org/TR/speech-synthesis/
-"""
-"""
-f = open('myfile.txt')
-contents = f.read()
-print(contents)
-"""
-
 import os
-import sys
-from google.cloud import storage
-from google.cloud import texttospeech
-from dotenv import load_dotenv
+from   dotenv import load_dotenv
+from   google.cloud import storage
+from   google.cloud import texttospeech
+#### import sys
+
 load_dotenv()
 
 def blob_exists(bktnm, filename):

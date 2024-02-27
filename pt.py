@@ -1,18 +1,16 @@
-import sys
+#### import sys
+#### import shutil
+## from google.cloud import texttospeech
+## from google.cloud.vision import types
+## from google.cloud import vision_v1 as vision
+## from google.cloud.vision_v1 import types
 import os
 import io
 import re
 import json
-import shutil
-## from google.cloud import texttospeech
-from google.cloud import storage
-from google.cloud import vision
-## from google.cloud.vision import types
-
-## from google.cloud import vision_v1 as vision
-## from google.cloud.vision_v1 import types
-import shutil
-from dotenv import load_dotenv
+from   google.cloud import storage
+from   google.cloud import vision
+from   dotenv import load_dotenv
 load_dotenv()
 
 def pdf_to_text(input_fl , output_fl ):

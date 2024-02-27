@@ -1,23 +1,11 @@
-"""Synthesizes speech from the input string of text or ssml.
-Make sure to be working in a virtual environment.
-Note: ssml must be well-formed according to:
-    https://www.w3.org/TR/speech-synthesis/
-"""
-"""
-f = open('myfile.txt')
-contents = f.read()
-print(contents)
-177657:69257:
-"""
-
 import os
-import sys
-import re
-import glob
-import tempfile
-import multiprocessing
-from   google.cloud import storage
-from   google.cloud import texttospeech
+#### import sys
+#### import re
+#### import glob
+#### import tempfile
+#### import multiprocessing
+#### from   google.cloud import storage
+#### from   google.cloud import texttospeech
 ## from   ffmpeg import FFmpeg, Progress, FFmpegFileNotFound, FFmpegInvalidCommand
 from dotenv import load_dotenv
 load_dotenv()
