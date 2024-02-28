@@ -91,7 +91,7 @@ ALTERNATE IDEAS:-
 
 Instead of using pdf_to_txt.py, gimagereader (https://github.com/manisandro/gImageReader/releases/tag/master ) can be used for converting to txt from pdf. It is wonderful menu driven software. Internally it uses tesseract OCR engine.
 
-Generated txt files from gimagereader can also be directly submitted to 3wavv.py or 0mp3ffmpeg.py. Just bring the .txt file in same directory and ensure proper environment variables are set.
+Generated txt files from gimagereader can also be directly submitted to txt_to_wav.py or txt_to_mp3_alternate.py. Just bring the .txt file in same directory and ensure proper .env variables are set.
 
 MICROSOFT provides (old) software to convert text to wav. It's name is ttsapp. As I understand these aren't AI based.  Also check https://www.microsoft.com/en-us/download/details.aspx?id=10121.
 
