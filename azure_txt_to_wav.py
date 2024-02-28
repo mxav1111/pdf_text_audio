@@ -1,12 +1,15 @@
 import os
 import re
+
 import azure.cognitiveservices.speech as speechsdk
-from   dotenv import load_dotenv
+from dotenv import load_dotenv
+
 load_dotenv()
 
+
 def split_text_into_chunks(text, max_chunk_size):
-    sentstop=os.environ["sentstop"]
-    text      = text.replace('\n','')
+    sentstop = os.environ["sentstop"]
+    text = text.replace("\n", "")
     sentences = text.split(sentstop)
     chunks = []
     current_chunk = ""
@@ -23,42 +26,56 @@ def split_text_into_chunks(text, max_chunk_size):
 
     return chunks
 
+
 def text_to_mp3_chunk(text, output_filename):
-    speech_key     = os.environ["SPEECH_KEY"]  
+    speech_key = os.environ["SPEECH_KEY"]
     service_region = os.environ["SPEECH_REGION"]
 
     chunks = split_text_into_chunks(text, max_chunk_size=500)  # 500 in bytes
     print(f' {speech_key} | {service_region} | {os.environ["msvoicename"]} ')
     for i, chunk in enumerate(chunks):
-         speech_config       = speechsdk.SpeechConfig(subscription=speech_key, region=service_region)
-         speech_config.speech_synthesis_voice_name = os.environ["msvoicename"]
-         audio_config        = speechsdk.audio.AudioOutputConfig(filename=f"{output_filename}_{i}.wav")
-         synthesizer         = speechsdk.SpeechSynthesizer(speech_config=speech_config, audio_config=audio_config)
-         result              = synthesizer.speak_text_async(chunk).get()
-         if result.reason   == speechsdk.ResultReason.SynthesizingAudioCompleted:
-            print("Speech synthesized for chunk [{}], and the audio was saved to [{}_{}]".format(chunk, output_filename,i))
-         elif result.reason == speechsdk.ResultReason.Canceled:
+        speech_config = speechsdk.SpeechConfig(
+            subscription=speech_key, region=service_region
+        )
+        speech_config.speech_synthesis_voice_name = os.environ["msvoicename"]
+        audio_config = speechsdk.audio.AudioOutputConfig(
+            filename=f"{output_filename}_{i}.wav"
+        )
+        synthesizer = speechsdk.SpeechSynthesizer(
+            speech_config=speech_config, audio_config=audio_config
+        )
+        result = synthesizer.speak_text_async(chunk).get()
+        if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
+            print(
+                "Speech synthesized for chunk [{}], and the audio was saved to [{}_{}]".format(
+                    chunk, output_filename, i
+                )
+            )
+        elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
             print("Speech synthesis canceled: {}".format(cancellation_details.reason))
             if cancellation_details.reason == speechsdk.CancellationReason.Error:
                 print("Error details: {}".format(cancellation_details.error_details))
 
+
 def main():
-    input_text_file = os.environ["book"]+".txt"
-    output_directory = 'output_mp3_chunks'
+    input_text_file = os.environ["book"] + ".txt"
+    output_directory = "output_mp3_chunks"
 
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
 
-    with open(input_text_file, 'r', encoding='utf-8') as file:
+    with open(input_text_file, "r", encoding="utf-8") as file:
         fc = file.read()
 
-    fc=re.sub(r'(?:=!pgB!=.*=!Epg!=\n)+',r'',fc)
-    fc=re.sub(r'\([^ ]\)-(\n)+',r'\1',fc)
-    fc=re.sub(r'([^ ])-\n',r'\1',fc)
-    fc=re.sub(r'(\n)+',r' ',fc); fc=re.sub(r'\n',r' ',fc); fc=re.sub(r'[ ][ ]*',r' ',fc)
-    text_to_mp3_chunk(fc, os.path.join(output_directory, 'output'))
+    fc = re.sub(r"(?:=!pgB!=.*=!Epg!=\n)+", r"", fc)
+    fc = re.sub(r"\([^ ]\)-(\n)+", r"\1", fc)
+    fc = re.sub(r"([^ ])-\n", r"\1", fc)
+    fc = re.sub(r"(\n)+", r" ", fc)
+    fc = re.sub(r"\n", r" ", fc)
+    fc = re.sub(r"[ ][ ]*", r" ", fc)
+    text_to_mp3_chunk(fc, os.path.join(output_directory, "output"))
+
 
 if __name__ == "__main__":
     main()
-

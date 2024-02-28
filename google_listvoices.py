@@ -1,6 +1,8 @@
-from google.cloud import texttospeech
 from dotenv import load_dotenv
+from google.cloud import texttospeech
+
 load_dotenv()
+
 
 def list_voices():
 
@@ -19,5 +21,5 @@ def list_voices():
         print(f"SSML Voice Gender: {ssml_gender.name}")
         print(f"Natural Sample Rate Hertz: {voice.natural_sample_rate_hertz}\n")
 
-list_voices()
 
+list_voices()
