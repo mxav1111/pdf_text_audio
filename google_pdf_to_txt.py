@@ -9,66 +9,14 @@ from google.cloud import storage, vision
 load_dotenv()
 
 
-def pdf_to_text(input_fl, output_fl):
-    client = vision.ImageAnnotatorClient()
-    mime_type = "application/pdf"  # Supported mime_types are: 'application/pdf' and 'image/tiff'
-    client = vision.ImageAnnotatorClient()
-    feature = vision.Feature(
-        type_=vision.Feature.Type.DOCUMENT_TEXT_DETECTION, model="builtin/latest"
-    )
-    image_context = {"language_hints": [langhint]}
-    with io.open(input_fl, "rb") as pdf_file:
-        pdf_file = str(pdf_file)
-        storage_client = storage.Client()
-        bucket = storage_client.bucket(bktnm)
-        input_file_in_cloud = "pdf/" + str(input_fl)
-        blob = bucket.blob(input_file_in_cloud)  ## destination file name on cloud
-        generation_match_precondition = 0
-        if storage.Blob(bucket=bucket, name=input_file_in_cloud).exists(storage_client):
-            generation_match_precondition = blob.generation
-            blob.delete(
-                if_generation_match=generation_match_precondition
-            )  ## delete if pre-exists
-        output_file_in_cloud = "txt/" + str(output_fl)
-        if storage.Blob(bucket=bucket, name=output_file_in_cloud).exists(
-            storage_client
-        ):
-            generation_match_precondition = blob.generation
-            blob.delete(
-                if_generation_match=generation_match_precondition
-            )  ## delete if pre-exists
-        generation_match_precondition = 0
-        blob.upload_from_filename(
-            input_fl, if_generation_match=generation_match_precondition
-        )  ## source file to read
-        print(
-            f"File {input_fl} uploaded as {input_file_in_cloud}."
-        )  ## upload is over. Prepare source and destination for pdf to text
-        gcs_source_uri = "gs://" + os.environ["bktnm"] + "/" + input_file_in_cloud
-        gcs_source = vision.GcsSource(uri=gcs_source_uri)
-        input_config = vision.InputConfig(gcs_source=gcs_source, mime_type=mime_type)
-        gcs_destination_uri = "gs://" + os.environ["bktnm"] + "/" + "txt/" + output_fl
-        gcs_destination = vision.GcsDestination(uri=gcs_destination_uri)
-        output_config = vision.OutputConfig(
-            gcs_destination=gcs_destination, batch_size=batch_size
-        )
-        async_request = vision.AsyncAnnotateFileRequest(
-            features=[feature],
-            input_config=input_config,
-            output_config=output_config,
-            image_context=image_context,
-        )
-        operation = client.async_batch_annotate_files(requests=[async_request])
-
-        print("Waiting for the pdf to txt to finish..")
-        filesResponse = operation.result(timeout=420)
-        print(f"pdf to txt finished: Saved as {output_file_in_cloud}.")
-        write_to_text(
-            "gs://" + os.environ["bktnm"] + "/" + "txt/",
-            output_fl,
-            output_file_in_cloud,
-        )
-        exit()
+credential_path = os.environ["credential_path"]
+location = os.environ["location"]
+bktnm = os.environ["bktnm"]
+project_id = os.environ["project_id"]
+pagenumbers = os.environ["pagenumbers"]
+langhint = os.environ["langhint"]
+batch_size = 100
+pagenumbers = pagenumbers or "YES"
 
 
 def write_to_text(gcs_destination_uri, output_fl, output_file_in_cloud):
@@ -110,27 +58,65 @@ def write_to_text(gcs_destination_uri, output_fl, output_file_in_cloud):
 
             with open(output_fl, "a+", encoding="utf-8") as f:
                 if pagenumbers == "YES":
-                    f.write(
-                        "\n=!pgB!="
-                        + "Page:"
-                        + str(context["pageNumber"]).zfill(3).ljust(13, "=")
-                        + " Confidence:"
-                        + str(confidence).ljust(20, "=")
-                        + "Page:"
-                        + str(context["pageNumber"]).zfill(3)
-                        + "=!Epg!=\n"
-                    )
+                    f.write(f"\n=!pgB!=Page: {str(context['pageNumber']).zfill(3).ljust(13, '=')} Confidence: {str(confidence).ljust(20, '=')} Page: {str(context['pageNumber']).zfill(3)}=!Epg!=\n")
                 f.write(annotation["text"])
     print(f"{output_fl} saved.")
 
 
-credential_path = os.environ["credential_path"]
-location = os.environ["location"]
-bktnm = os.environ["bktnm"]
-project_id = os.environ["project_id"]
-pagenumbers = os.environ["pagenumbers"]
-langhint = os.environ["langhint"]
-batch_size = 100
-pagenumbers = pagenumbers or "YES"
-pdf_to_text(os.environ["book"] + ".pdf", os.environ["book"] + ".txt")
-print(f"done.")
+def pdf_to_text(input_fl, output_fl):
+    client = vision.ImageAnnotatorClient()
+    mime_type = "application/pdf"  # Supported mime_types are: 'application/pdf' and 'image/tiff'
+    client = vision.ImageAnnotatorClient()
+    feature = vision.Feature(
+        type_=vision.Feature.Type.DOCUMENT_TEXT_DETECTION, model="builtin/latest"
+    )
+    image_context = {"language_hints": [langhint]}
+    with io.open(input_fl, "rb") as pdf_file:
+        pdf_file = str(pdf_file)
+        storage_client = storage.Client()
+        bucket = storage_client.bucket(bktnm)
+        input_file_in_cloud = "pdf/" + str(input_fl)
+        blob = bucket.blob(input_file_in_cloud)  ## destination file name on cloud
+        generation_match_precondition = 0
+        if storage.Blob(bucket=bucket, name=input_file_in_cloud).exists(storage_client):
+            generation_match_precondition = blob.generation
+            ## delete if pre-exists
+            blob.delete(if_generation_match=generation_match_precondition)  
+        output_file_in_cloud = "txt/" + str(output_fl)
+        if storage.Blob(bucket=bucket, name=output_file_in_cloud).exists(storage_client):
+            generation_match_precondition = blob.generation
+            ## delete if pre-exists
+            blob.delete(if_generation_match=generation_match_precondition)  
+        generation_match_precondition = 0
+        ## source file to read
+        blob.upload_from_filename(input_fl, if_generation_match=generation_match_precondition)  
+        ## upload is over. Prepare source and destination for pdf to text
+        print(f"File {input_fl} uploaded as {input_file_in_cloud}.")  
+
+        gcs_source_uri = "gs://" + os.environ["bktnm"] + "/" + input_file_in_cloud
+        gcs_source = vision.GcsSource(uri=gcs_source_uri)
+        input_config = vision.InputConfig(gcs_source=gcs_source, mime_type=mime_type)
+        gcs_destination_uri = "gs://" + os.environ["bktnm"] + "/" + "txt/" + output_fl
+        gcs_destination = vision.GcsDestination(uri=gcs_destination_uri)
+        output_config = vision.OutputConfig(gcs_destination=gcs_destination, batch_size=batch_size)
+        async_request = vision.AsyncAnnotateFileRequest(
+            features=[feature],
+            input_config=input_config,
+            output_config=output_config,
+            image_context=image_context,
+        )
+        operation = client.async_batch_annotate_files(requests=[async_request])
+
+        print("Waiting for the pdf to txt to finish..")
+        filesResponse = operation.result(timeout=420)
+        print(f"pdf to txt finished: Saved as {output_file_in_cloud}.")
+        write_to_text(
+            f"gs://{os.environ['bktnm']}/txt/",
+            output_fl,
+            output_file_in_cloud,
+        )
+
+
+if __name__ == "__main__":
+    pdf_to_text(os.environ["book"] + ".pdf", os.environ["book"] + ".txt")
+    print(f"done.")
