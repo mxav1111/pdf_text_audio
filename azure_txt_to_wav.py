@@ -7,6 +7,18 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def list_ms_voices():
+    speech_config = speechsdk.SpeechConfig(
+        subscription=os.environ["SPEECH_KEY"],
+        region=os.environ["SPEECH_REGION"],
+    )
+    client = speechsdk.SpeechSynthesizer(speech_config=speech_config)
+    voices_result = client.get_voices_async().get()
+    print("Voice:")
+    for v in voices_result.voices:
+        print(f"Name:{v.name}|{v.short_name}|{v.locale}|{v.gender}|{v.local_name}|{v.voice_type}|{v.style_list}")
+
+
 def split_text_into_chunks(text, max_chunk_size):
     sentstop = os.environ["sentstop"]
     text = text.replace("\n", "")
@@ -46,16 +58,12 @@ def text_to_mp3_chunk(text, output_filename):
         )
         result = synthesizer.speak_text_async(chunk).get()
         if result.reason == speechsdk.ResultReason.SynthesizingAudioCompleted:
-            print(
-                "Speech synthesized for chunk [{}], and the audio was saved to [{}_{}]".format(
-                    chunk, output_filename, i
-                )
-            )
+            print(f"Speech synthesized for chunk [{chunk}], and the audio was saved to [{output_filename}_{i}]")
         elif result.reason == speechsdk.ResultReason.Canceled:
             cancellation_details = result.cancellation_details
-            print("Speech synthesis canceled: {}".format(cancellation_details.reason))
+            print(f"Speech synthesis canceled: {cancellation_details.reason}")
             if cancellation_details.reason == speechsdk.CancellationReason.Error:
-                print("Error details: {}".format(cancellation_details.error_details))
+                print(f"Error details: {cancellation_details.error_details}")
 
 
 def main():
@@ -74,6 +82,7 @@ def main():
     fc = re.sub(r"(\n)+", r" ", fc)
     fc = re.sub(r"\n", r" ", fc)
     fc = re.sub(r"[ ][ ]*", r" ", fc)
+
     text_to_mp3_chunk(fc, os.path.join(output_directory, "output"))
 
 
