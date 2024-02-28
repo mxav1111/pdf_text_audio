@@ -61,25 +61,25 @@ bga variable points to background music to be added via 7bgmp3.py.
     In case of windows, Start the command prompt. Keep the book pdf files, BOOKNAME.PDF and all scripts together in same directory as they are working as such. 
     Also Ensure book filename is without spaces. 
     
- 1. g_listvoices.py ## This will display available google cloud based voices and language codes. langcode and voicename environment vairalbes above are to be set based on outcome of this script depending on language of the book.
+ 1. google_listvoices.py ## This will display available google cloud based voices and language codes. langcode and voicename environment vairalbes above are to be set based on outcome of this script depending on language of the book.
 
     This command will display all the google supported hindi indian voices.
 
-    C:\books> g_listvoices.py | find /i "hi-in"   
+    C:\books> google_listvoices.py | find /i "hi-in"   
 
- 2a. pt.py ## Convert pdf to text. Google cloud APIs. 
+ 2a. pdf_to_txt.py ## Convert pdf to text. Google cloud APIs. 
  
- 2b. ms_pt.py ## Convert pdf to text. MS Azure APIs.
+ 2b. azure_ms_pdf_to_txt.py ## Convert pdf to text. MS Azure APIs.
  
- 3a. 3wavv.py ## Convert text to wav voice file using google TextToSpeech SynthesizeLongAudioRequest api.
+ 3a. txt_to_wav.py ## Convert text to wav voice file using google TextToSpeech SynthesizeLongAudioRequest api.
  
- 3b. 0mp3ffmpeg.py ## use this if issues with 3wavv.py, this will use different (split files) logic and create mp3 instead uses Google cloud.
+ 3b. txt_to_mp3_alternate.py ## use this if issues with 3wavv.py, this will use different (split files) logic and create mp3 instead uses Google cloud.
  
- 4. ms_st4_wav.py ## wip. Creates wav file using Microsoft cognitive services.
+ 4. azure_ms_txt_to_wav.py ## wip. Creates wav file using Microsoft cognitive services.
     
- 5. ms_listvoices.py ## List MS voices.
+ 5. azure_ms_listvoices.py ## List MS Azure voices.
     
- 7. 7bgmp3.py ## Add background music. There are lots of royalty free music available on internet. You can download any such mp3 and use it (see environment varriable bga above)
+ 7. merge_background_music.py ## Add background music. There are lots of royalty free music available on internet. You can download any such mp3 and use it (see environment varriable bga above)
     
  8. requirements.txt ## install prereqs.
      
