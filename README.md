@@ -85,7 +85,7 @@ bga variable points to background music to be added via 7bgmp3.py.
      
  9. .env sample file.
      
-If there is heavy i/o (especially in 0mp3ffmpeg.py or st4, install arsenal and create ramdisk and work in ram based drive. Just copy back the final output to physical disk. This will give significant boost to performance.
+If there is heavy i/o (especially in txt_to_mp3_alternate.py or azure_ms_txt_to_wav.py, install arsenal and create ramdisk and work in ram based drive. Just copy back the final output to physical disk. This will give significant boost to performance.
 
 ALTERNATE IDEAS:-
 
