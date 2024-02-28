@@ -89,7 +89,7 @@ If there is heavy i/o (especially in 0mp3ffmpeg.py or st4, install arsenal and c
 
 ALTERNATE IDEAS:-
 
-Instead of using 2pdftotxt.py, gimagereader (https://github.com/manisandro/gImageReader/releases/tag/master ) can be used for converting to txt from pdf. It is wonderful menu driven software. Internally it uses tesseract OCR engine.
+Instead of using pdf_to_txt.py, gimagereader (https://github.com/manisandro/gImageReader/releases/tag/master ) can be used for converting to txt from pdf. It is wonderful menu driven software. Internally it uses tesseract OCR engine.
 
 Generated txt files from gimagereader can also be directly submitted to 3wavv.py or 0mp3ffmpeg.py. Just bring the .txt file in same directory and ensure proper environment variables are set.
 
