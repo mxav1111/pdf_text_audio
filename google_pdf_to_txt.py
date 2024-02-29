@@ -10,13 +10,13 @@ load_dotenv()
 
 
 credential_path = os.environ["credential_path"]
+project_id = os.environ["project_id"]
 location = os.environ["location"]
 bktnm = os.environ["bktnm"]
-project_id = os.environ["project_id"]
-pagenumbers = os.environ["pagenumbers"]
+
+pagenumbers = os.environ["pagenumbers"] or "YES"
 langhint = os.environ["langhint"]
 batch_size = 100
-pagenumbers = pagenumbers or "YES"
 
 
 def write_to_text(gcs_destination_uri, output_fl, output_file_in_cloud):
