@@ -73,8 +73,9 @@ f = open(audio_file_to_write, "w", encoding="utf-8")
 file_in_buffer=re.sub(r'(?:=!pgB!=.*=!Epg!=\n)+',r'',file_in_buffer)
 file_in_buffer=re.sub(r'\([^ ]\)-(\n)+',r'\1',file_in_buffer) ## word that splits and spans line using hypen is merged
 file_in_buffer=re.sub(r'([^ ])-\n',r'\1',file_in_buffer) ## remove new lines and convert multi spaces to single.
-file_in_buffer=re.sub(r'(\n)+',r' ',file_in_buffer); file_in_buffer=re.sub(r'\n',r' ',file_in_buffer); file_in_buffer=re.sub(r'[ ][ ]*',r' ',file_in_buffer)  ## remove new lines and convert multi spaces to single.
-
+file_in_buffer=re.sub(r'(\n)+',r' ',file_in_buffer);
+file_in_buffer=re.sub(r'\n',r' ',file_in_buffer);
+file_in_buffer=re.sub(r'[ ][ ]*',r' ',file_in_buffer)  ## remove new lines and convert multi spaces to single.
 
 if blob_exists(bktnm, audio_file_to_write):
     print(f"{audio_file_to_write} exists in {bktnm}, removing first..")
