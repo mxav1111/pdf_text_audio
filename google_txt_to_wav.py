@@ -6,15 +6,17 @@ from google.cloud import storage, texttospeech
 load_dotenv()
 
 
+credential_path = os.environ["credential_path"]
+project_id = os.environ["project_id"]
+location = os.environ["location"]
+bktnm = os.environ["bktnm"]
+
 langcode = os.environ["langcode"]
 voicename = os.environ["voicename"]
 speakingrate = os.environ["speakingrate"]
 text_file_to_read = os.environ["book"] + ".txt"
 audio_file_to_write = os.environ["book"] + "_" + voicename + "_" + speakingrate + ".wav"
-credential_path = os.environ["credential_path"]
-bktnm = os.environ["bktnm"]
-location = os.environ["location"]
-project_id = os.environ["project_id"]
+
 output_gcs_uri = "gs://" + bktnm + "/" + audio_file_to_write
 parent = f"projects/" + project_id + "/locations/" + location
 langcode = langcode or "hi-IN"
@@ -68,7 +70,7 @@ print(f"Using: {langcode} : {voicename} : {speakingrate}")
 with open(text_file_to_read, "r", encoding="utf-8") as f:
     file_in_buffer = f.read()
 
-f = open(audio_file_to_write, "w", encoding="utf-8")
+# f = open(audio_file_to_write, "w", encoding="utf-8")
 
 file_in_buffer=re.sub(r'(?:=!pgB!=.*=!Epg!=\n)+',r'',file_in_buffer)
 file_in_buffer=re.sub(r'\([^ ]\)-(\n)+',r'\1',file_in_buffer) ## word that splits and spans line using hypen is merged
@@ -104,7 +106,9 @@ request = texttospeech.SynthesizeLongAudioRequest(
 
 operation = client.synthesize_long_audio(request=request)
 result = operation.result(timeout=900)  ## wait upto 15 mins
+
 print(f"\nFinished processing, check {bktnm}: {audio_file_to_write} as result={result}.", result)
 print(f"\nDownloading {audio_file_to_write}...")
+
 blob_download(bktnm, audio_file_to_write)
 print("done!")
