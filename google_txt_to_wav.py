@@ -17,7 +17,7 @@ speakingrate = os.environ["speakingrate"]
 text_file_to_read = os.environ["book"] + ".txt"
 audio_file_to_write = os.environ["book"] + "_" + voicename + "_" + speakingrate + ".wav"
 
-output_gcs_uri = "gs://" + bktnm + "/" + audio_file_to_write
+output_gcs_uri = f"gs://{bktnm}/{audio_file_to_write}"
 parent = f"projects/" + project_id + "/locations/" + location
 langcode = langcode or "hi-IN"
 voicename = voicename or "hi-IN-Neural2-A"
