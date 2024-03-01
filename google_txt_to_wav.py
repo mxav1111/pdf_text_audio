@@ -85,6 +85,8 @@ def txt_to_audio(text_file_to_read, audio_file_to_write):
     audio_contents = blob_getbytes(bktnm, audio_file_to_write)
     with open(audio_file_to_write, "wb") as f:
          f.write(audio_contents)
+    return (audio_contents)
+
 
 print(f"processing {text_file_to_read} --> {audio_file_to_write}")
 print(f"Using: {langcode} : {voicename} : {speakingrate}")
