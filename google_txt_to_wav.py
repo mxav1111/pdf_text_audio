@@ -87,7 +87,7 @@ if blob_exists(bktnm, audio_file_to_write):
 print(f"Creating {audio_file_to_write} in {bktnm}..")
 
 client = texttospeech.TextToSpeechLongAudioSynthesizeClient()
-input = texttospeech.SynthesisInput(text=fc)
+input = texttospeech.SynthesisInput(text=file_in_buffer)
 audio_config = texttospeech.AudioConfig(
     audio_encoding=texttospeech.AudioEncoding.LINEAR16,
     speaking_rate=float(speakingrate),
