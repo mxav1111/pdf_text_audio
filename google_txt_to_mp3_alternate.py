@@ -75,9 +75,8 @@ while curr_position_in_utf < utf_buffer_size:
             ## time to break outside loop too but in a way that last piece of write can commplete
             curr_position_in_utf = utf_buffer_size  
             break  ## aaaand break out
-        text_chunk = (
-            text_chunk + file_in_buffer[start_of_sentence : end_of_sentence + 1]
-        )  # a new quote started
+        # a new quote started
+        text_chunk = (text_chunk + file_in_buffer[start_of_sentence : end_of_sentence + 1])  
         start_of_sentence = end_of_sentence + 1
         text_chunk_size = len(text_chunk.encode("utf-8"))
         print(f"start_of_sentence={start_of_sentence},end_of_sentence={end_of_sentence},text_chunk_size={text_chunk_size},len={len(text_chunk)}, curr_position_in_utf={curr_position_in_utf}, utf_buffer_size={utf_buffer_size}")
