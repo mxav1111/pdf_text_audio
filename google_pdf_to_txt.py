@@ -61,10 +61,6 @@ def write_to_text(gcs_destination_uri, output_file, output_file_in_cloud):
                 f.write(annotation["text"])
     print(f"{output_file} saved.")
 
-    with open(output_file, "r", encoding="utf-8") as f:
-        text = f.read()
-    return text
-
 
 def pdf_to_text(input_file):
     output_file = input_file.split(".")[0] + ".txt"
@@ -116,12 +112,11 @@ def pdf_to_text(input_file):
     print("Waiting for the pdf to txt to finish..")
     filesResponse = operation.result(timeout=420)
     print(f"pdf to txt finished: Saved as {output_file_in_cloud}.")
-    text = write_to_text(
+    write_to_text(
         f"gs://{bktnm}/txt/",
         output_file,
         output_file_in_cloud,
     )
-    return text
 
 
 if __name__ == "__main__":
