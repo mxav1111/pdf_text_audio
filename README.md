@@ -11,13 +11,12 @@ PREREQS:
 Tested with python 3.9 (linux) or 3.12 (windows).
 1. pip install -r requirements.txt
    
-3. apt-get install ffmpeg (or install from https://gyan.dev for windows)
+2. apt-get install ffmpeg (or install from https://gyan.dev for windows)
    
-5. Must have google cloud account (or MS azure account) with storage bucket, project id, location and application credentials json file and similarly Microsoft's cognitive and documentintelligence keys.
+3. Must have google cloud account (or MS azure account) with storage bucket, project id, location and application credentials json file and similarly Microsoft's cognitive and documentintelligence keys.
    
-7. update the .env accordingly as follows  :-
-   
-4A) Environment should be set as below. Example cmd or shell script is provided. Just update and run the same. book_file_name below should be without extension and avoid spaces in filename (rename otherwise). For example, if Book File Name is BE_HAPPY.PDF then set book=BE_HAPPY scripts will automatically create BE_HAPPY.txt , BE_HAPPY.wav , BE_HAPPY.mp3 , BE_HAPPY.json etc using BE_HAPPY.PDF. Actual Source file MUST have .PDF extension. 
+4. update the .env accordingly as follows  :-
+   1. a. Environment should be set as below. Example cmd or shell script is provided. Just update and run the same. book_file_name below should be without extension and avoid spaces in filename (rename otherwise). For example, if Book File Name is BE_HAPPY.PDF then set book=BE_HAPPY scripts will automatically create BE_HAPPY.txt , BE_HAPPY.wav , BE_HAPPY.mp3 , BE_HAPPY.json etc using BE_HAPPY.PDF. Actual Source file MUST have .PDF extension. 
 
 
 Sample .env file is provided. Here's some explanation.
